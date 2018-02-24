@@ -4,7 +4,7 @@
 /dist
 /tmp
 /out-tsc
-/code-gen
+/output
 
 # dependencies
 /node_modules

@@ -1,0 +1,30 @@
+import { Injectable } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/toArray';
+import { {{titlize module}}Result, {{titlize module}}PaginatedSearchResult } from '../model/{{module}}-search.model';
+import {plainToClass} from "class-transformer";
+import { PagingInfo, PagingConfig, AbstractSearchService } from '../../../shared/service/search';
+import { HttpClient } from '@angular/common/http';
+
+
+@Injectable()
+export class {{titlize module}}SearchService extends AbstractSearchService<{{titlize module}}Result> {
+
+    constructor(private http: HttpClient){
+        super();
+    }
+    
+    invokeService(searchCriteria: any) {
+        let url:string = "{{module}}?page=" + searchCriteria.pagingConfig.page;
+        this.http.get(url).subscribe((resp) => {
+            let result: {{titlize module}}PaginatedSearchResult = plainToClass({{titlize module}}PaginatedSearchResult, resp as Object);
+            this.handleSearchResult(result);
+        });
+    }
+}

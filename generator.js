@@ -9,6 +9,7 @@ console.log(ROOT);
 
 var data = { "module": module };
 
+/* Helpers */
 var camelize = function(input){
     return su(input).camelize().value();
 }
@@ -22,13 +23,6 @@ function fileExists(path){
     return fs.existsSync(path);
 }
 
-handlebars.registerHelper('titlize', titleize);
-handlebars.registerHelper('camelize', camelize);
-
-if (!fs.existsSync(ROOT)){
-    fs.mkdirSync(ROOT);
-}
-
 function execTemplate(name, data){
     var source = fs.readFileSync(name, 'utf8');
     var template = handlebars.compile(source);
@@ -36,20 +30,58 @@ function execTemplate(name, data){
     return result;
 }
 
+handlebars.registerHelper('titlize', titleize);
+handlebars.registerHelper('camelize', camelize);
+
+/* Code Generation */
+
+//Root directory for module
+if (!fileExists(ROOT)){
+    fs.mkdirSync(ROOT);
+}
+
+//Directory for components, models & services
+['components', 'model', 'service'].forEach(folder => {
+    var p = path.join(ROOT, folder);
+    if (!fileExists(p)){
+        fs.mkdirSync(p);
+    }
+});
+
+//Sub directory for components
+['search', 'edit', 'view'].forEach(folder => {
+    var p = path.join(ROOT, 'components', folder);
+    if (!fileExists(p)){
+        fs.mkdirSync(p);
+    }
+});
+
+//Root module
 (function generateModule(){
     let uri = path.join(ROOT, module + '.module.ts');
     if (fileExists(uri)){
         return
     }
 
-    fs.writeFileSync(uri, execTemplate('templates/module.htm', data));
+    fs.writeFileSync(uri, execTemplate('templates/module.txt', data));
 })();
 
+//Root component
 (function generateRootComponent(){
     let uri = path.join(ROOT, module + '.component.ts');
     if (fileExists(uri)){
         return
     }
     
-    fs.writeFileSync(uri, execTemplate('templates/root-component.htm', data));
+    fs.writeFileSync(uri, execTemplate('templates/root-component.txt', data));
+})();
+
+//Search service
+(function generateRootComponent(){
+    let uri = path.join(ROOT, 'service', module + '-search.service.ts');
+    if (fileExists(uri)){
+        return
+    }
+    
+    fs.writeFileSync(uri, execTemplate('templates/search-service.txt', data));
 })();
