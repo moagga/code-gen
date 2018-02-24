@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 var module = process.argv[2];
-const ROOT = path.join(path.dirname(process.argv[1]), '/code-gen/', module);
+const ROOT = path.join(path.dirname(process.argv[1]), 'output', module);
 console.log(ROOT);
 
 var data = { "module": module };
