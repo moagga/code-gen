@@ -1,0 +1,47 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { {{titlize module}}SearchComponent } from './components/search/search.component';
+import { {{titlize module}}ViewComponent } from './components/view/{{module}}-view.component';
+import { {{titlize module}}SearchService } from './service/{{module}}-search.service';
+import { {{titlize module}}Component } from './{{module}}.component';
+import { {{titlize module}}BasicSearchComponent } from './components/search/form/basic-search-form.component';
+import { {{titlize module}}AdvancedSearchComponent } from './components/search/form/advanced-search-form.component';
+import { SharedModule } from '../../shared.module';
+import { {{titlize module}}DataRowComponent } from './components/search/grid/data-row.component';
+import { {{titlize module}}Service } from './service/{{module}}.service';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: {{titlize module}}Component,
+    children: [
+      {
+        path: '',
+        component: {{titlize module}}SearchComponent
+      },
+      {
+        path: ':id',
+        component: {{titlize module}}ViewComponent
+      }
+    ]
+  }
+];
+
+@NgModule({
+  imports: [
+    SharedModule,
+    RouterModule.forChild(routes)
+  ],
+  declarations: [
+    {{titlize module}}Component,
+    {{titlize module}}BasicSearchComponent,
+    {{titlize module}}AdvancedSearchComponent,
+    {{titlize module}}SearchComponent,
+    {{titlize module}}ViewComponent,
+    {{titlize module}}DataRowComponent
+  ],
+  providers: [{{titlize module}}SearchService, {{titlize module}}Service],
+  entryComponents: [{{titlize module}}AdvancedSearchComponent]
+})
+export class {{titlize module}}Module { }

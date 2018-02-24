@@ -1,0 +1,15 @@
+{
+  "name": "imc-code-gen",
+  "version": "1.0.0",
+  "description": "imc-code-gen",
+  "main": "index.js",
+  "scripts": {
+    "code-gen": "node generator.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "handlebars": "^4.0.11",
+    "underscore.string": "^3.3.4"
+  }
+}
