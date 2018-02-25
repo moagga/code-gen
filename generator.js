@@ -77,11 +77,31 @@ if (!fileExists(ROOT)){
 })();
 
 //Search service
-(function generateRootComponent(){
+(function generateSearchServiceComponent(){
     let uri = path.join(ROOT, 'service', module + '-search.service.ts');
     if (fileExists(uri)){
         return
     }
     
     fs.writeFileSync(uri, execTemplate('templates/search-service.txt', data));
+})();
+
+//Search model
+(function generateSearchModelComponent(){
+    let uri = path.join(ROOT, 'model', module + '-search.model.ts');
+    if (fileExists(uri)){
+        return
+    }
+    
+    let fields = [
+        {name: 'id', type: 'number'},
+        {name: 'settlementTypeCd', type: 'TypeCodeDesc'}
+    ];
+
+    let context = {
+        module: module,
+        fields: fields
+    };
+
+    fs.writeFileSync(uri, execTemplate('templates/search-model.txt', context));
 })();

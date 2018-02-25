@@ -1,0 +1,38 @@
+import {Type, Expose} from 'class-transformer';
+import { PaginatedSearchResult } from '../../../shared/service/search';
+import { toDate } from './../../../shared/utils/model-utils';
+import { TypeCodeDesc } from '../../../shared/service/common';
+
+function {{titlize module}}Alias(){
+    return {{titlize module}}Result;
+}
+export class {{titlize module}}PaginatedSearchResult extends PaginatedSearchResult<{{titlize module}}Result>{
+
+    @Type({{titlize module}}Alias)
+    data: {{titlize module}}Result[];
+
+    getData(){
+        return this.data;
+    }
+
+}
+
+export class {{titlize module}}Result {
+
+    {{#each fields}}
+    private _{{name}}: {{type}};
+    {{/each}}
+
+    {{#each fields}}
+    @Expose()
+	public get {{name}}(): {{type}} {
+		return this._{{name}};
+	}
+
+	public set {{name}}(value: {{type}}) {
+		this._{{name}} = value;
+	}
+
+    {{/each}}
+
+}
