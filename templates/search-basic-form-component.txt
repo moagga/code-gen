@@ -1,0 +1,41 @@
+import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+
+import { {{titlize module}}SearchService } from './../../../service/{{module}}-search.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { {{titlize module}}AdvancedSearchComponent } from './advanced-search-form.component';
+import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
+
+@Component({
+  selector: '{{module}}-basic-search',
+  templateUrl: './basic-search-form.component.html'
+})
+export class {{titlize module}}BasicSearchComponent {
+
+  searchForm: FormGroup;
+  modalRef: BsModalRef;
+  
+  constructor(
+    private service:{{titlize module}}SearchService,
+    private modalService: BsModalService
+  ){}
+
+  ngOnInit(){
+    let criteria: any = this.service.searchCriteria;
+    this.searchForm = new FormGroup({
+        {{#each fields}}
+        {{name}}: new FormControl(criteria['{{name}}']),
+        {{/each}}
+    });
+  }
+
+  doSearch(){
+      this.service.search(this.searchForm.value);
+  }
+
+  showAdvancedFilters() {
+    this.modalRef = this.modalService.show({{titlize module}}AdvancedSearchComponent);
+  }
+}
+
+

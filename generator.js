@@ -7,7 +7,12 @@ var module = process.argv[2];
 const ROOT = path.join(path.dirname(process.argv[1]), 'output', module);
 console.log(ROOT);
 
-var data = { "module": module };
+// var data = { "module": module };
+
+/* Read code-gen config */
+var configPath = path.join(ROOT, 'code-gen-config.json');
+var data = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+data.module = module;
 
 /* Helpers */
 var camelize = function(input){
@@ -56,6 +61,14 @@ if (!fileExists(ROOT)){
     }
 });
 
+//Sub directory for search components
+(function(){
+    var p = path.join(ROOT, 'components', 'search', 'form');
+    if (!fileExists(p)){
+        fs.mkdirSync(p);
+    }
+})();
+
 //Root module
 (function generateModule(){
     let uri = path.join(ROOT, module + '.module.ts');
@@ -93,14 +106,14 @@ if (!fileExists(ROOT)){
         return
     }
     
-    let fields = [
-        {name: 'id', type: 'number'},
-        {name: 'settlementTypeCd', type: 'TypeCodeDesc'}
-    ];
+    // let fields = [
+    //     {name: 'id', type: 'number'},
+    //     {name: 'settlementTypeCd', type: 'TypeCodeDesc'}
+    // ];
 
     let context = {
         module: module,
-        fields: fields
+        fields: data.search.model.fields
     };
 
     fs.writeFileSync(uri, execTemplate('templates/search-model.txt', context));
@@ -132,17 +145,23 @@ if (!fileExists(ROOT)){
     
     let context = {
         module: module,
-        columns: [
-            {
-                label: 'Trade Reference',
-                name: 'tradeReference'
-            },
-            {
-                label: 'Settlement Date',
-                name: 'settlementDate'
-            }
-        ]
+        columns: data.search.grid.columns
     };
 
     fs.writeFileSync(uri, execTemplate('templates/search-root-template.txt', context));
+})();
+
+//Search basic filter component
+(function generateSearchBasicFilterComponent(){
+    let uri = path.join(ROOT, 'components', 'search', 'form', 'basic-seach-form.component.ts');
+    if (fileExists(uri)){
+        return
+    }
+    
+    let context = {
+        module: module,
+        fields: data.search.basicFilters.fields
+    };
+
+    fs.writeFileSync(uri, execTemplate('templates/search-basic-form-component.txt', context));
 })();
