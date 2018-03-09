@@ -1,0 +1,59 @@
+import { Component } from '@angular/core';
+import { {{titlize module}}Result } from './../../model/{{module}}-search.model';
+import { Observable } from 'rxjs/Observable';
+import { FormControl, FormGroup } from '@angular/forms';
+
+import { {{titlize module}}SearchService } from './../../service/{{module}}-search.service';
+import { SearchEvent, Type, PagingInfo } from '../../../../shared/service/search';
+
+import { Router } from '@angular/router';
+
+@Component({
+  selector: '{{module}}-search',
+  templateUrl: './search.component.html'
+})
+export class {{titlize module}}SearchComponent {
+
+  disable: boolean = false;
+  results: {{titlize module}}Result[];
+  pagingInfo: PagingInfo;
+
+  private dataSubscription: any;
+
+  constructor(private service:{{titlize module}}SearchService,
+    private router: Router
+  ){
+  }
+
+  ngOnInit(){
+    this.dataSubscription = this.service.dataSubscription.subscribe((event: SearchEvent<{{titlize module}}Result>) => {
+      switch (event.type) {
+        case Type.LOADING:
+          this.disable = true;
+          break;
+        case Type.LOADED:
+          this.results = event.data
+          this.pagingInfo = event.pagingInfo;
+          this.disable = false;
+          break;
+      }
+    });
+  }
+
+  pageChanged(event: any): void {
+    this.service.goToPage(event.page);
+  }
+
+  ngOnDestroy(){
+    this.dataSubscription.unsubscribe();
+  }
+
+  loadForm = function () {
+    this.router.navigate(['./../../{{module}}','create']);
+  };
+
+  loadViewForm = function() {
+    this.router.navigate(['./../../{{module}}','id']);
+  }
+  
+}

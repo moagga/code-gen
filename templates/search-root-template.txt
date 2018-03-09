@@ -1,0 +1,38 @@
+<div class="search-area">
+    <div class="container">
+        <div class="row screen-header">
+            <div class="col-xl-4">
+                <h3 i18n="@@label.{{module}}.search">Settlement Instruction Search</h3>
+            </div>
+            <div class="col-xl-8 text-right">
+                <button type="button" class="btn btn-primary" i18n="@@label.button.new" (click)="loadForm();">
+                        <i class="fa fa-plus no-border color-white" aria-hidden="true"></i> CREATE NEW
+                </button>
+                <button class="btn btn-link"><img src="./../../../assets/icons/filter-with-up-arrow.png" /></button>
+            </div>
+        </div>
+        <hr size="2">
+    </div>
+    <{{module}}-basic-search></{{module}}-basic-search>
+</div>
+<div class="list-area container">
+    <div class="data-grid">
+        <div class="row data-grid-header">
+            {{#each columns}}
+            <div class="col-xl-1" i18n="@@label.{{camelize label}}">{{label}}</div>
+            {{/each}}
+        </div>
+
+        <div class="row data-grid-row parent-row even" *ngFor="let model of results">
+            {{#each columns}}
+            <div class="col-xl-2 string">
+                {{name}}
+            </div>
+            {{/each}}
+        </div>
+
+    </div>
+
+    <paginator [disabled]="disable" (pageChanged)="pageChanged($event)" [pagingInfo]="pagingInfo">
+    </paginator>
+</div>

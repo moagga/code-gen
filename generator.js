@@ -105,3 +105,44 @@ if (!fileExists(ROOT)){
 
     fs.writeFileSync(uri, execTemplate('templates/search-model.txt', context));
 })();
+
+/**
+ * Search components code generation
+ */
+//Search Root component
+(function generateSearchRootComponent(){
+    let uri = path.join(ROOT, 'components', 'search', 'search.component.ts');
+    if (fileExists(uri)){
+        return
+    }
+    
+    let context = {
+        module: module
+    };
+
+    fs.writeFileSync(uri, execTemplate('templates/search-root-component.txt', context));
+})();
+
+//Search Root template
+(function generateSearchRootTemplate(){
+    let uri = path.join(ROOT, 'components', 'search', 'search.component.html');
+    if (fileExists(uri)){
+        return
+    }
+    
+    let context = {
+        module: module,
+        columns: [
+            {
+                label: 'Trade Reference',
+                name: 'tradeReference'
+            },
+            {
+                label: 'Settlement Date',
+                name: 'settlementDate'
+            }
+        ]
+    };
+
+    fs.writeFileSync(uri, execTemplate('templates/search-root-template.txt', context));
+})();
