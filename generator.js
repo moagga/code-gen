@@ -180,3 +180,19 @@ if (!fileExists(ROOT)){
 
     fs.writeFileSync(uri, execTemplate('templates/search-basic-form-template.txt', context));
 })();
+
+/**
+ * View components code generation
+ */
+(function generateViewComponent(){
+    let uri = path.join(ROOT, 'components', 'view', module + '-view.component.ts');
+    if (fileExists(uri)){
+        return
+    }
+    
+    let context = {
+        module: module
+    };
+
+    fs.writeFileSync(uri, execTemplate('templates/view-component.txt', context));
+})();

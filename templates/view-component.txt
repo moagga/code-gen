@@ -1,0 +1,35 @@
+import { Component } from '@angular/core';
+import { Location } from '@angular/common';
+import { {{titlize module}}Service } from '../../service/{{module}}.service';
+import { ParamMap, ActivatedRoute} from '@angular/router';
+import 'rxjs/add/operator/switchMap';
+
+
+@Component({
+  templateUrl: './{{module}}-view.component.html'
+})
+export class {{titlize module}}ViewComponent {
+
+  private _id: string;
+  model: any;
+
+  constructor(
+    private location: Location,
+    private route: ActivatedRoute,
+    private service: {{titlize module}}Service
+  ){}
+
+  ngOnInit(){
+    this.route.paramMap.switchMap((params: ParamMap) => {
+      this._id = params.get('id')
+      return this.service.get(this._id);
+    }).subscribe((data:string) => {
+      this.model = JSON.parse(data);
+    });
+  }
+
+  cancel(){
+    this.location.back();
+  }
+
+}
