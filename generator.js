@@ -165,3 +165,18 @@ if (!fileExists(ROOT)){
 
     fs.writeFileSync(uri, execTemplate('templates/search-basic-form-component.txt', context));
 })();
+
+//Search basic filter template
+(function generateSearchBasicFilterTemplate(){
+    let uri = path.join(ROOT, 'components', 'search', 'form', 'basic-seach-form.component.html');
+    if (fileExists(uri)){
+        return
+    }
+    
+    let context = {
+        module: module,
+        fields: data.search.basicFilters.fields
+    };
+
+    fs.writeFileSync(uri, execTemplate('templates/search-basic-form-template.txt', context));
+})();
